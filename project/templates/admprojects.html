@@ -1,0 +1,59 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Projects Database
+{% endblock %}
+
+{% block main %}
+    <h5>Projects Database</h5>
+    
+    <hr>
+    <div >
+        <form class="row g-4" action="/admprojects" method="post">
+        
+            <div class="col-auto">
+            <label for="username" class="visually-hidden"></label>
+            <select class="form-select" name="project_id">
+                <option value="Project id" selected>Select Project id</option>
+                {% for projects in projects %}
+                    <option value="{{ projects.project_id }}">{{ projects.project_id }}</option>
+                {% endfor %}
+            </select>
+            </div>
+        
+            <div class="col-auto">
+                <button class="btn btn-secondary" type="submit" >Delete</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+
+    <div class="table-responsive">
+        <table class="table table-sm text-nowrap" id="activities">
+            <thead class="table-info">
+                <tr>
+                    <th class="text-start">project_id</th>
+                    <th class="text-start">user_id</th>
+                    <th class="text-start">project_name</th>
+                    <th class="text-start">project_start</th>
+                    <th class="text-start">date created</th>
+                </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider ">
+                {% for projects in projects %} 
+                <tr>
+                    <td class="text-start">{{ projects.project_id }}</td>
+                    <td class="text-start">{{ projects.user_id }}</td>
+                    <td class="text-start">{{ projects.project_name }}</td>
+                    <td class="text-start">{{ projects.project_start }}</td>
+                    <td class="text-start">{{ projects.date }}</td>
+                </tr>
+                {% endfor %}
+            
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block main %}
+
+    <!-- Selection Section-->
+    <div class="flex-dashboard">
+        <div >
+            <h5 style="text-align:left; width: 100%; color: rgb(26, 95, 151); margin-top: 5px; margin-left: 20px;">
+                Project Portfolio
+            </h5>
+        </div>
+        
+        <div id="rightalign">
+            <form class="row g-3" action="/portfolio" method="post" style="margin-right: 20px;">
+
+                <div class="col-auto">
+                <label for="cutoff" class="visually-hidden"></label>
+                <input style="text-align: right;" type="text" class="form-control-plaintext" id="cutoff" value="Cut-Off Date">
+                </div>
+            
+                <div class="col-auto">
+                <label for="inputPassword2" class="visually-hidden">Password</label>
+                <select class="form-select" name="cutoff">
+                    <option value="{{ cutoff }}" selected >{{ cutoff}}</option>
+                    {% for dates in dates %}
+                        <option value="{{ dates.cutoff }}">{{ dates.cutoff }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+            
+                <div class="col-auto">
+                    <button class="btn btn-secondary" type="submit" >Show</button>
+                </div>
+            </form>
+        </div>
+        <!-- End of Selection Section-->
+    
+    </div>
+
+<div class="flex-dashboard">
+    <table class="table table-hover " style="margin-left: 20px; margin-right: 20px;">
+        <thead >
+            <tr>
+                <th class="text-center">Project ID</th>
+                <th class="text-start">Project Name</th>
+                <th class="text-center">Finish Date</th>
+                <th class="text-end">Total Income</th>
+                <th class="text-end">Profit</th>
+                <th class="text-end">Profit %</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider ">
+            {% for data in data %} 
+            <tr>
+                <td class="text-center">{{ data.project_id }}</td>
+                <td class="text-start">{{ data.project_name }}</td>
+                <td class="text-center">{{ data.planned_finish }}</td>
+                <td class="text-end ">{{ "{:,.0f} $".format(data.income) }}</td>
+                <td class="text-end">{{ "{:,.0f} $".format(data.income - data.expense) }}</td>
+                <td class="text-end">{{ "{:,.2f} %".format((data.income - data.expense)*100 / data.income) }}</td>
+            </tr>
+            {% endfor %}
+        
+        </tbody>
+        <tfoot class="table-group-divider ">
+            <tr>
+                <td class="border-0 fw-bold text-end" colspan="3">GRAND TOTAL</td>
+                <td class="border-0 fw-bold text-end">{{ "{:,.0f} $".format(total_income) }}</td>
+                <td class="border-0 fw-bold text-end">{{ "{:,.0f} $".format(total_profit) }}</td>
+                <td class="border-0 fw-bold text-end">{{ "{:,.2f} %".format(total_profit*100 / total_income) }}</td>
+                
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+{% endblock %}

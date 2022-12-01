@@ -1,0 +1,97 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Data Database
+{% endblock %}
+
+{% block main %}
+    <h5>Data Database</h5>
+    <hr>
+
+    <!-- Data Delete menu -->
+    <div >
+        <form class="row g-4" action="/admdata" method="post">
+        
+            <div class="col-auto">
+            <label for="data_id" class="visually-hidden"></label>
+            <select class="form-select" name="data_id">
+                <option value="Select id" selected>Select id</option>
+                {% for data in data %}
+                    <option value="{{ data.id }}">{{ data.id }}</option>
+                {% endfor %}
+            </select>
+            </div>
+        
+            <div class="col-auto">
+                <button class="btn btn-secondary" type="submit" >Delete</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <!-- End of Data Delete menu -->
+
+    <div class="table-responsive">
+        <table class="table table-sm text-nowrap" style="height:16px; font-size:12px;">
+            <thead class="table-info">
+                <tr>
+                    <th class="text-start">id</th>
+                    <th class="text-start">user_id</th>
+                    <th class="text-start">project_id</th>
+                    <th class="text-start">project_name</th>
+                    <th class="text-start">cutoff</th>
+                    <th class="text-start">project_start</th>
+                    <th class="text-start">contract_finish</th>
+                    <th class="text-start">planned_finish</th>
+                    <th class="text-start">total_mh</th>
+                    <th class="text-start">planned_mh</th>
+                    <th class="text-start">earned_mh</th>
+                    <th class="text-start">actual_mh</th>
+                    <th class="text-start">estimated_mh</th>
+                    <th class="text-start">bluecollar_mp</th>
+                    <th class="text-start">whitecollar_mp</th>
+                    <th class="text-start">subcon_mp</th>
+                    <th class="text-start">income</th>
+                    <th class="text-start">expense</th>
+                    <th class="text-start">invoice</th>
+                    <th class="text-start">accrual_balance</th>
+                    <th class="text-start">cash</th>
+                    <th class="text-start">cash_balance</th>
+                    <th class="text-start">date</th>
+                </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider ">
+                {% for data in data %} 
+                <tr>
+                    <td class="text-start">{{ data.id }}</td>
+                    <td class="text-start">{{ data.user_id }}</td>
+                    <td class="text-start">{{ data.project_id }}</td>
+                    <td class="text-start">{{ data.project_name }}</td>
+                    <td class="text-start">{{ data.cutoff }}</td>
+                    <td class="text-start">{{ data.project_start }}</td>
+                    <td class="text-start">{{ data.contract_finish }}</td>
+                    <td class="text-start">{{ data.planned_finish }}</td>
+                    <td class="text-start">{{ data.total_mh }}</td>
+                    <td class="text-start">{{ data.planned_mh }}</td>
+                    <td class="text-start">{{ data.earned_mh }}</td>
+                    <td class="text-start">{{ data.actual_mh }}</td>
+                    <td class="text-start">{{ data.estimated_mh }}</td>
+                    <td class="text-start">{{ data.bluecollar_mp }}</td>
+                    <td class="text-start">{{ data.whitecollar_mp }}</td>
+                    <td class="text-start">{{ data.subcon_mp }}</td>
+                    <td class="text-start">{{ data.income }}</td>
+                    <td class="text-start">{{ data.expense }}</td>
+                    <td class="text-start">{{ data.invoice }}</td>
+                    <td class="text-start">{{ data.accrual_balance }}</td>
+                    <td class="text-start">{{ data.cash }}</td>
+                    <td class="text-start">{{ data.cash_balance }}</td>
+                    <td class="text-start">{{ data.date }}</td>
+                </tr>
+                {% endfor %}
+            
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

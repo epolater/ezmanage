@@ -1,0 +1,32 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    New Project
+{% endblock %}
+
+{% block main %}
+<div class="flex-dashboard">
+    <form action="/newproject" method="post" style="width:100%; margin:20px;">
+      <h5 style="text-align:left; width: 100%; color: rgb(26, 95, 151);">Create New Project</h5>
+      <hr>
+  
+      <div class="row mb-3">
+        <label for="colFormLabel" class="col-sm-2 col-form-label">Project Name</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" name="p_name" autocomplete="off" autofocus>
+        </div>
+
+      </div>
+      <div class="row mb-3">
+        <label for="colFormLabel" class="col-sm-2 col-form-label">Project Start Date</label>
+        <div class="col-sm-4">
+          <input type="date" class="form-control" name="p_start" autocomplete="off" autofocus>
+        </div>
+
+      </div >
+      <hr>
+      <button type="submit" class="btn btn-secondary">Create</button>
+    </form>
+  </div>
+
+{% endblock %}

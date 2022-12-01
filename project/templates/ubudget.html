@@ -1,0 +1,53 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Update Budget
+{% endblock %}
+
+{% block main %}
+<div class="flex-dashboard">
+    <form  action="/ubudget" method="post" style="width:100%; margin:20px;">
+
+        <h5 style="text-align:left; width: 100%; color: rgb(26, 95, 151);">Update Budget</h5>
+        <hr>
+
+        <div class="row mb-3">
+            <label for="colFormLabel" class="col-sm-2 col-form-label">Project Name</label>
+            <div class="col-sm-4">
+                <select class="form-select" name="project_name">
+                    <option disable selected>Select Project Name</option>
+                    {% for projects in projects %}
+                        <option value="{{ projects.project_name }}">{{ projects.project_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabel" class="col-sm-2 col-form-label">Cut-off Date</label>
+            <div class="col-sm-4">
+                <input  autofocus class="form-control" name="cutoff" type="date">
+            </div>    
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabel" class="col-sm-2 col-form-label">Total Income</label>
+            <div class="col-sm-4">
+                <input  autofocus class="form-control" name="income" type="number">
+            </div>    
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabel" class="col-sm-2 col-form-label">Total Expense</label>
+            <div class="col-sm-4">
+                <input  autofocus class="form-control" name="expense" type="number">
+            </div>    
+        </div>
+       
+        <hr>
+        <button class="btn btn-secondary" type="submit">Update</button>
+        
+    </form>
+</div>    
+
+{% endblock %}

@@ -1,0 +1,497 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block main %}
+
+<!-- Selection Menu -------------->
+<div class="flex-dashboard-2">
+      
+    <form class="row g-3" action="/dashboard" method="post">
+        <!-- Project Name -------------->
+        <div class="col-auto">
+            <label for="cutoff" class="visually-hidden"></label>
+            <input id="projectname" value="Project Name" style="border-style: dashed; color: azure; text-align: right; font-weight: lighter; font-size: 13px; margin-top: 5px;" type="text" class="form-control-plaintext" >
+        </div>
+
+        <div class="col-auto">
+            <label for="projectnasme" class="visually-hidden">Select Project</label>
+            <select class="form-select" name="projectname" style="color: azure; font-size: 20px; font-weight: bolder; border: 0; background-color: #0000;">
+                <option value="{{ project_name }}" selected>{{ project_name }}</option>
+                {% for projects in projects %}
+                    <option  value="{{ projects.project_name }}">{{ projects.project_name }}</option>
+                {% endfor %}
+            </select>
+
+        </div>   
+
+        
+        <!-- Cut-off Date -------------->
+        <div class="col-auto" style="float: right;">
+            <label for="cutoff" class="visually-hidden"></label>
+            <input style="color: azure; text-align: right; font-weight: lighter;" type="text" class="form-control-plaintext" id="cutoff" value="Cut-Off Date">
+        </div>
+    
+        <div class="col-auto">
+        <label for="cutoff" class="visually-hidden">Select Date</label>
+        <select class="form-select" name="cutoff" style="color: azure; border: 0; background-color: #0000; margin-top: 2px;">
+            <option value="{{ cutoff }}" selected>{{ cutoff}}</option>
+            {% for dates in dates %}
+                <option value="{{ dates.cutoff }}">{{ dates.cutoff }}</option>
+            {% endfor %}
+        </select>
+        </div>
+    
+        <div class="col-auto" style="margin-top: 20px; margin-left: 10px; float: right;">
+            <button class="btn btn-sm  btn-info" type="submit" >Show</button>
+        </div>
+    </form>
+    
+</div>
+
+{% if project_name == 'Select Project' %}
+<div class="flex-container-t" style=" height:500px;"> 
+    <div style=" font-weight: lighter; font-size:18px ; margin: auto;">
+        Select from the menu to generate dashboard
+    </div>
+</div>    
+{% endif %}
+
+{% if project_name != 'Select Project' %}
+<!-- Dates Section -------------->
+<div class="flex-dashboard">
+    <div style="display: flex; ">
+        <div style="font-size: 18px; font-weight: lighter; width: 160px; text-align: right; margin-right: 10px;">Start Date</div>
+        <div style="font-size: 18px; font-weight: bolder; width: 120px; text-align: left;">{{start}}</div>
+    </div>
+
+    <div style="display: flex; ">
+        <div style="font-size: 18px; font-weight: lighter; width: 160px; text-align: right; margin-right: 10px;">Contract Finish Date</div>
+        <div style="font-size: 18px; font-weight: bolder; width: 120px; text-align: left;">{{finish}}</div>
+    </div>
+
+    <div style="display: flex; ">
+        <div style="font-size: 18px; font-weight: lighter; width: 160px; text-align: right; margin-right: 10px;">Planned Finish Date</div>
+        <div style="font-size: 18px; font-weight: bolder; width: 120px; text-align: left; ">{{finishp}}</div>
+    </div>
+
+    <div style="display: flex; ">
+        <div style="font-size: 18px; font-weight: lighter; width: 160px; text-align: right; margin-right: 10px;">Duration (Months)</div>
+        <div style="font-size: 18px; font-weight: bolder; width: 120px; text-align: left; ">{{duration_m}}</div>
+    </div>
+
+</div>
+
+<!-- Manhour And Performance Section -------------->
+<div class="flex-dashboard">
+    <!-- Physical Progress Chart ------------------------------>
+    <div style="width: 170px; height: 170px; float: left; position: relative; margin: 10px;">
+        <div style="width: 100%; height: auto; position: absolute; top: 45%; left: 0; line-height:19px; text-align: center; z-index: 3">
+            <p style="font-size: 22px; color:rgb(0,150,200);">{{actual_progress}}%</p>
+        </div>
+        <canvas id="Physical_Progress" width="200" height="200" aria-label="Duration" role="img"></canvas>
+        <p style="text-align: center; color:rgb(0, 150, 200); font-weight: bold; font-size: 16px;">Actaul Progress</p>
+        <script>
+            var xValues = ["Completed", "Remaining"];
+            var yValues = ["{{actual_progress}}", 100 - "{{actual_progress}}"];
+            var barColors = [
+            "rgb(0,150,200)",
+            "rgb(217,217,217)",
+            ];
+
+            new Chart("Physical_Progress", {
+            type: "doughnut",
+            data: {
+                /* labels: xValues, */
+                datasets: [{
+                backgroundColor: barColors, 
+                data: yValues
+                }]
+            },
+            
+            options: {
+                title: {
+                display: false,
+                position: 'bottom',
+                text: "Physical Progress"
+                },
+                responsive: true,
+                cutoutPercentage: 70,
+            }
+            
+            });
+        </script>
+        
+    </div>
+    
+    <!-- Planned Progress Chart ------------------------------>
+    <div style="width: 170px; height: 170px; float: left; position: relative; margin: 10px; ">
+        <div style="width: 100%; height: auto; position: absolute; top: 45%; left: 0; line-height:19px; text-align: center; z-index: 3">
+            <p style="font-size: 22px; color:rgb(118,149,53);">{{planned_progress}}%</p>
+        </div>
+        <canvas id="Planned_Progress" width="200" height="200" aria-label="Duration" role="img"></canvas>
+        <p style="text-align: center; color:rgb(118,149,53); font-weight: bold; font-size: 16px; ">Planned Progress</p>
+        <script>
+            var xValues = ["Completed", "Remaining"];
+            var yValues = ["{{planned_progress}}", 100 - "{{planned_progress}}"];
+            var barColors = [
+            "rgb(118,149,53)",
+            "rgb(217,217,217)",
+            ];
+
+            new Chart("Planned_Progress", {
+            type: "doughnut",
+            data: {
+                /* labels: xValues, */
+                datasets: [{
+                backgroundColor: barColors, 
+                data: yValues
+                }]
+            },
+            
+            options: {
+                title: {
+                display: false,
+                position: 'bottom',
+                text: "Planned Progress"
+                },
+                responsive: true,
+                cutoutPercentage: 70,
+            }
+            
+            });
+        </script>
+        
+    </div>
+
+    <!-- Duration Progress Chart ------------------------------>
+    <div style="width: 170px; height: 170px; float: left; position: relative; margin: 10px; margin-bottom: 20px;">
+        <div style="width: 100%; height: auto; position: absolute; top: 45%; left: 0; line-height:19px; text-align: center; z-index: 3">
+            <p style="font-size: 22px; color:rgb(120, 120, 120);">{{durpass_perc}}%</p>
+        </div>
+        <canvas id="Duration_Passed" width="200" height="200" aria-label="Duration" role="img"></canvas>
+        <p style="text-align: center; color:rgb(120, 120, 120); font-weight: bold; font-size: 16px; ">Duration Passed</p>
+        <script>
+            var xValues = ["Completed", "Remaining"];
+            var yValues = ["{{durpass_perc}}", 100 - "{{durpass_perc}}"];
+            var barColors = [
+            "rgb(120,120,120)",
+            "rgb(217,217,217)",
+            ];
+
+            new Chart("Duration_Passed", {
+            type: "doughnut",
+            data: {
+                /* labels: xValues, */
+                datasets: [{
+                backgroundColor: barColors, 
+                data: yValues
+                }]
+            },
+            
+            options: {
+                title: {
+                display: false,
+                position: 'bottom',
+                text: "Physical Progress"
+                },
+                responsive: true,
+                cutoutPercentage: 70,
+            }
+            
+            });
+        </script>
+        
+    </div>
+
+    <!-- Manhour Section-->
+    <div style="width: 310px; height: 200px; float: left; position: relative; margin: 10px;">
+        <div style="height: 50%; text-align: center; width: 50%; position: absolute; top: 0; left: 0;" >
+            <div style="font-size: 20px; font-weight: bolder; position: absolute; top: 10%; width: 100%;">{{total_mh}}</div>
+            <div style="width: 100%; position: absolute; top: 40%;"> Σ Budgeted MH</div>
+        </div>
+       
+        <div style="height: 50%; text-align: center; width: 50%; position: absolute; top: 0; right: 0;" >
+            <div style="color: gray; font-size: 20px; font-weight: bolder; position: absolute; top: 10%; width: 100%;">{{estimated_mh}}</div>
+            <div style="width: 100%; position: absolute; top: 40%;"> Σ At Completion MH</div>
+        </div>
+        
+        <div style="height: 50%; text-align: center; width: 50%; position: absolute; top: 50%; left: 0;" >
+            <div style="color: rgb(0, 150, 200); font-size: 20px; font-weight: bolder; position: absolute; top: 10%; width: 100%;">{{earned_mh}}</div>
+            <div style="width: 100%; position: absolute; top: 40%;"> Σ Earned MH</div>
+        </div>
+        
+        <div style="height: 50%; text-align: center; width: 50%; position: absolute; top: 50%; right: 0;" >
+            <div style="color: brown; font-size: 20px; font-weight: bolder; position: absolute; top: 10%; width: 100%;">{{actual_mh}}</div>
+            <div style="width: 100%; position: absolute; top: 40%;"> Σ Actual MH</div>
+        </div>
+    </div>
+
+    <!-- CPI-SPI Section-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div style="width: 300px; height: 200px; float: left; position: relative; margin: 10px;">
+    
+        <!-- CPI-SPI Graph-->
+        <div>
+            <div style="width: 100%; margin: auto;">
+            <canvas id="myChart" style="height: 100%;"></canvas>
+                <script>
+                    // setup
+                    const DATA_COUNT = 7;
+                    const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+                    const data = {
+                    datasets: [
+                        {
+                        label: 'Dataset 1',
+                        data: [
+                            {x: 0.5, y: 0.5},
+                            {x: 1.5, y: 0.5},
+                            {x: 0.5, y: 1.5},
+                            {x: 1.5, y: 1.5},
+
+                        ],
+                        borderColor: 'rgba(255,255,255, 0)',
+                        backgroundColor: 'rgba(255,255,255, 0)',
+                        },
+                        {
+                        label: 'CPI-SPI',
+                        data: [
+                            {x: "{{cpi}}", y: "{{spi}}"},
+                        ],
+                        borderColor: 'brown',
+                        backgroundColor: 'red',
+                        },
+                    
+                    ]
+                    };
+                
+                    // plugin
+                    const quadrants = {
+                        id: 'quadrants',
+                        beforeDraw(chart, args, options) {
+                            const {ctx, chartArea: {left, top, right, bottom}, scales: {x, y}} = chart;
+                            const midX = x.getPixelForValue(1);
+                            const midY = y.getPixelForValue(1);
+                            ctx.save();
+                            ctx.fillStyle = options.topLeft;
+                            ctx.fillRect(left, top, midX - left, midY - top);
+                            ctx.fillStyle = options.topRight;
+                            ctx.fillRect(midX, top, right - midX, midY - top);
+                            ctx.fillStyle = options.bottomRight;
+                            ctx.fillRect(midX, midY, right - midX, bottom - midY);
+                            ctx.fillStyle = options.bottomLeft;
+                            ctx.fillRect(left, midY, midX - left, bottom - midY);
+                            ctx.restore();
+
+                        }
+                        };   
+                
+                    // config
+                    const config = {
+                        type: 'scatter',
+                        data: data,
+                        options: {
+                            plugins: {
+                            quadrants: {
+                                topLeft: 'rgba(255,0,0, 0.12)',
+                                topRight: 'rgba(60,190,60, 0.35)',
+                                bottomRight: 'rgba(255,0,0, 0.12)',
+                                bottomLeft: 'rgba(255,0,0, 0.3)',
+                                        },
+                            legend: { display: false,},
+                            
+                                        },
+                                    },
+                        
+                        plugins: [quadrants]
+                        };
+                
+                    // init render
+                    const myChart = new Chart(
+                        document.getElementById('myChart'),
+                        config
+                    );
+                
+                </script>
+            </div>
+
+            <div style="font-size: 10px; position: absolute; top: 14px; left: 40px;">Excessive<br>Manpower</div>
+            <div style="font-size: 10px; position: absolute; top: 14px; right: 20px;">No Action<br>Required</div>
+            <div style="font-size: 10px; position: absolute; top: 90px; left: 40px;">Danger<br>Zone</div>
+            <div style="font-size: 10px; position: absolute; top: 90px; right: 20px;">Insuficient <br>Manpower</div>
+
+        </div>
+
+        <!-- CPI-SPI Values-->
+        <div>
+            
+            <div style="width: 50%;">
+                <div style="font-size: 15px; text-align: left; width: 50%; position: absolute; left: 10%; bottom: 6px;">CPI :</div>
+                <div style="font-size: 18px; text-align: left; font-weight: bold; width: 50%; position: absolute; left: 27%; bottom: 3px;">{{cpi}}</div>
+
+            </div>
+
+            <div style=" width: 50%; position: absolute; top: 172px; left: 50%;">
+                <div style="font-size: 15px; text-align: right; width: 50%; position: absolute; bottom: 3px;">SPI :</div>
+                <div style="font-size: 18px; text-align: center; font-weight: bold; width: 50%; float: right;">{{spi}}</div>
+
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<!-- Financials Section -------------->
+<div class="flex-dashboard">
+    <!-- Budget  -------------->
+    <div class="flex-budget" style="margin-top: 10px;">
+        <!-- Budget Numbers -------------->
+        <div style=" width: 200px; position: relative; margin-right: 30px; margin-bottom: 10px;">
+            <div style="text-align: right; font-weight: bolder; font-size: 20px; color: rgb(0, 120, 180);">$ {{income}}</div>
+            <div style="text-align: right;">Total Income</div>
+            <p></p>
+            <div style="text-align: right; font-weight: bolder; font-size: 20px; color: brown;">$ {{expense}}</div>
+            <div style="text-align: right;">Total Expense</div>
+            <p></p>
+            <div style="text-align: right; font-weight: bolder; font-size: 20px;">$ {{profit}}</div>
+            <div style="text-align: right;">Total Profit</div>
+            <p></p>
+            <div style="text-align: right; font-size: 18px; font-weight: bolder;">{{profitrate}} %</div>
+            <div style="text-align: right;">Profit Rate</div>
+        </div>
+
+        <!-- Budget Graph -------------->
+        <div style=" width: 300px; height: 300px; float: right; margin-bottom: 10px;">
+            <canvas id="bar-chart-grouped"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script> 
+
+            <script>
+                Chart.register(ChartDataLabels);
+                new Chart(document.getElementById("bar-chart-grouped"), {
+                type: 'bar',
+                data: {
+                labels: ["Budget (in millions)"],
+                datasets: [
+                    {
+                    label: "Income",
+                    backgroundColor: "rgba(170,195,250, 0.7)",
+                    borderColor: 'rgba(85,150,200, 0.7)',
+                    borderWidth: 1.5,
+                    borderStyle:'dash',
+                    data: ["{{income_m}}"],
+                    }, {
+                    label: "Expense",
+                    backgroundColor: "rgba(242,167,164, 0.7)",
+                    borderColor: 'rgba(142,46,46, 0.7)',
+                    borderWidth: 1.5,
+                    borderStyle:'dash',
+                    data: ["{{expense_m}}"],
+                    }, {
+                    label: "Profit",
+                    backgroundColor: "rgba(150,220,186, 0.7)",
+                    borderColor: 'rgba(50,120,86, 0.7)',
+                    borderWidth: 1.5,
+                    borderStyle:'dash',
+                    data: ["{{profit_m}}"],
+                    }
+                ]
+                },
+                options: 
+                    {
+                    title: {display: false, position: 'top', text: 'Budget'},
+                    legend: { display: true, position: 'right'},
+                    scales: { yAxes: [{ticks: {beginAtZero: true}}]},
+                    responsive: true,
+                    maintainAspectRatio: false,
+                
+                    },
+                    plugins: {
+                        datalabels: {
+                        color: 'blue',
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: Math.round,
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                },
+                        
+
+                });
+                
+
+            </script>
+        </div>
+    </div>
+        
+    <!-- Financials -------------->
+    <div style="max-width: 500px; ;margin-top: 10px; display: flex; flex-direction: column; justify-content: space-around;">
+        <div style=" height: 40px; display: flex; justify-content: left;">
+            <div style="text-align: right; width: 30%; height: 30px; ">Invoice Approved</div>
+            <div style="text-align: right; width: 30%; font-weight: bolder;">$ {{invoice}}</div>
+            <div style="text-align: right; width: 10%; margin-left: 25px; font-weight: lighter;">{{invoice_p}}%</div>
+        </div>
+        <div style="height: 40px; display: flex; justify-content: left;">
+            <div style="text-align: right; width: 30%;  height: 30px; ">Cash Received</div>
+            <div style="text-align: right; width: 30%; font-weight: bolder;">$ {{cash}}</div>
+            <div style="text-align: right; width: 10%; margin-left: 25px; font-weight: lighter ;">{{cash_p}}%</div>
+            <div style="font-size: 10px ;text-align: right; width: 15%; font-weight: lighter;">with VAT</div>
+        </div>
+        <!-- Financial Graph -------------->
+        <div style="width: 500px; margin-top: 10px; margin-bottom: 20px;">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script>
+
+            <canvas id="chart2" height="100" ></canvas>
+            <script>
+                Chart.register(ChartDataLabels);
+                new Chart('chart2', {
+                type: 'bar',
+                data: {
+                    labels: ["Invoice Approved", "Cash Received"],
+                    datasets: [{
+                    data: ["{{invoice_m}}", "{{cash_m}}"],
+                    backgroundColor: "rgba(158,234,255, 0.7)",
+                    borderColor: 'rgba(85,150,200, 0.7)',
+                    borderWidth: 1.5,
+                    borderStyle:'dash',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y', layout: { padding: { right: 10 }},
+                    plugins: {
+                    title: {display: false, text: "in millions", position: 'bottom', },
+                    legend: {display: false,},
+                    /* datalabels: { color: 'blue', anchor: 'end', align: 'right', labels: { title: { font: { weight: 'bold'} }} } */
+                    },
+                    scales: { y: { grid: {display: false},}, x: {grid: {display: true} } }
+                }
+                });
+            </script>
+        </div>
+
+        <div style="height: 40px; display: flex; justify-content: left;">
+            <div style="text-align: right; width: 30%;  height: 30px; ">Cash Balance</div>
+            <div style=" text-align: right; width: 30%; font-weight: bolder;">$ {{cash_balance}}</div>
+            <div style="font-size: 10px ;text-align: right; width: 15%; font-weight: lighter;">with VAT</div>
+        </div>
+        <div style=" height: 40px; display: flex; justify-content: left;">
+            <div style="text-align: right; width: 30%;  height: 30px; ">Accrual Balance</div>
+            <div style=" text-align: right; width: 30%; font-weight: bolder;">$ {{accrual_balance}}</div>
+        </div>
+    
+
+</div>
+
+{% endif %}
+
+{% endblock %}

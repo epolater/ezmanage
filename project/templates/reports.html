@@ -1,0 +1,272 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Reports
+{% endblock %}
+
+{% block main %}
+
+<!-- Selection Menu -------------->
+<div class="select-menu-1">
+    <div style="color: azure; font-size: 18px;">. {{report_type}}</div>
+    <hr>
+    
+    <form action="/reports" method="post">
+        <!-- Report Selection Box -------------->
+        <div style="color: azure; font-size: 14px; font-weight: lighter; margin-bottom: 5px;">Report Type</div>
+        <select name="report_type" class="form-select" size="4" aria-label="report_type" style="width: 200px; font-size: 14px;  margin-bottom: 20px; ">
+            <option selected value="{{ report_type }}" class="visually-hidden">{{ report_type }}</option> 
+            
+            <option value="Status Report">Status Report</option>
+            <option value="Financial Report">Financial Report</option>
+            <option value="KPI Report">KPI Report</option>
+            
+        </select>    
+
+        <!-- Projects Box -------------->
+        <div style="color: azure; font-size: 14px; font-weight: lighter;">Projects</div>
+        <div style="color: azure; font-size: 10px; font-weight: lighter;">Hold down Ctrl to select multiple</div>
+        <select multiple  name="project_names" class="form-select" size="7" aria-label="project selection" style="width: 200px; font-size: 14px; margin-bottom: 10px; ">
+            {% for projects in projects %}
+                <option value="{{projects.project_name}}">{{projects.project_name}}</option>
+            {% endfor %}
+             
+            <!-- For selected items to remain selected, hidden -->
+            {% if project_count %}
+            {% for i in range(project_count) %}
+                <option selected value="{{ projects_selected[i] }}" class="visually-hidden">{{ projects_selected[i] }}</option>
+            {% endfor %}
+            {% endif %}
+
+        </select>
+  
+        <!-- Dates Box -------------->
+        <div style="color: azure; font-size: 14px; font-weight: lighter; margin-bottom: 5px; margin-top: 20px;">Cut-off Date</div>
+        <select name="cutoff" class="form-select" size="6" aria-label="cutoff" style="width: 200px; font-size: 14px;  margin-bottom: 10px; ">
+            <option selected value="{{ cutoff }}" class="visually-hidden">{{ cutoff }}</option> 
+            {% for dates in dates %}
+            <option value="{{ dates.cutoff }}">{{ dates.cutoff }}</option>
+            {% endfor %}
+        </select>
+
+        <div class="col-auto" style="margin-top: 20px; margin-left: 10px; float: right;">
+            <button class="btn btn-sm  btn-info" type="submit" >Show Report</button>
+        </div>
+
+    </form>
+
+</div>
+<!-- End of Selection Menu -------------->
+
+<!-- Report Table -------------->
+{% if not report_type or table_count == 0 %}
+    <div class="flex-container-t" style="width: 500px; height:610px; position: absolute; left: 260px;top: 80px; margin-right: 30px;"> 
+        <div style=" font-weight: lighter; font-size:18px ; margin: auto;">
+            Select from the menu to generate a report
+        </div>
+    </div>    
+{% endif %}
+<div style="display: flex; flex-wrap:nowrap; position: absolute; left: 260px;top: 80px; margin-right: 30px;">
+
+    <!-- STATUS REPORT -------------->
+    {% if report_type == 'Status Report' %}
+        <!-- Description Part of Table -------------->
+        <div class="flex-container-t" style="width:250px; margin-right: 5px;">
+            <table class="table table-hover" style="font-size: 15px; margin-left: 20px; margin-right: 20px;">
+                <thead style="height: 70px;">
+                    <tr>
+                        <th class="text-start" style="font-size: 14px; font-weight: lighter; position:relative; bottom:30px;">Cut-Off Date : {{cutoff}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider " style=" line-height: 20px;">
+                    <tr><td class="text-start">Planned Progress</td></tr>
+                    <tr><td class="text-start">Actual Progress</td></tr>
+                    <tr><td class="text-start">Variance</td></tr>
+                    <tr><td class="text-start">Planned Manhour</td></tr>
+                    <tr><td class="text-start">Earned Manhour</td></tr>
+                    <tr><td class="text-start">Actual Manhour</td></tr>
+                    <tr><td class="text-start">White Collar</td></tr>
+                    <tr><td class="text-start">Blue Collar</td></tr>
+                    <tr><td class="text-start">Subcontractors</td></tr>
+                    <tr><td class="text-start">Total Manpower</td></tr>
+                    <tr><td class="text-start">Indirect Manpower Ratio</td></tr>
+                    <tr><td class="text-start">Contract Start Date</td></tr>
+                    <tr><td class="text-start">Contract Finish Date</td></tr>
+                    <tr><td class="text-start">Planned Finish Date</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Numbers Part of Table -------------->
+        <div class="flex-container-t table-responsive"  style="margin-right: 5px; min-width: 200px; ">
+            {% if cutoff %}
+            {% for i in range(project_count) %}
+            <table class="table table-hover" style="font-size: 15px; width:120px; margin-left: 5px; margin-right: 5px; ">
+            
+                <thead style="height: 70px; color: rgb(88, 93, 97);" >
+                    <tr>
+                        <th class="text-end">{{ projects_selected[i] }}</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider " style=" line-height: 20px;">  
+                    <tr><td class="text-end" style="color: rgb(19, 130, 50);">{{table_data[i]['planned_progress']}} %</td></tr>
+                    <tr><td class="text-end" style="color: rgb(0, 68, 228);">{{table_data[i]['actual_progress']}} %</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['variance']}} %</td></tr>
+                    <tr><td class="text-end" style="color: rgb(19, 130, 50);">{{table_data[i]['planned_mh']}}</td></tr>
+                    <tr><td class="text-end" style="color: rgb(0, 68, 228);">{{table_data[i]['earned_mh']}}</td></tr>
+                    <tr><td class="text-end" style="color: brown">{{table_data[i]['actual_mh']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['whitecollar_mp']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['bluecollar_mp']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['subcon_mp']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['total_mp']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['direct_mp_ratio']}} %</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['start']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['contract_finish']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['planned_finish']}}</td></tr>
+                </tbody>
+                    
+            </table>
+            {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- FINACIAL REPORT -------------->        
+    {% if report_type == 'Financial Report' %}
+        <!-- Description Part of Table -------------->
+        <div class="flex-container-t" style="width:250px; margin-right: 5px;">
+            <table class="table table-hover" style="font-size: 15px; margin-left: 20px; margin-right: 20px;">
+                <thead style="height: 70px;">
+                    <tr>
+                        <th class="text-start" style="font-size: 14px; font-weight: lighter; position:relative; bottom:30px;">Cut-Off Date : {{cutoff}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider " style=" line-height: 20px;">
+                    <tr ><td class="text-start">Total Income</td></tr>
+                    <tr><td class="text-start">Total Expenses</td></tr>
+                    <tr><td class="text-start">Total Profit</td></tr>
+                    <tr><td class="text-start">Profit Rate</td></tr>
+                    <tr><td class="text-start">Invoice Approved</td></tr>
+                    <tr><td class="text-start">Cash Received</td></tr>
+                    <tr><td class="text-start">Cash Balance</td></tr>
+                    <tr><td class="text-start">Accrual Balance</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Numbers Part of Table -------------->
+        <div class="flex-container-t table-responsive"  style="margin-right: 5px; min-width: 200px; ">
+            {% if cutoff %}
+            {% for i in range(project_count) %}
+            <table class="table table-hover" style="font-size: 15px; width:140px; margin-left: 5px; margin-right: 5px; ">
+            
+                <thead style="height: 70px; color: rgb(88, 93, 97);" >
+                    <tr>
+                        <th class="text-end">{{ projects_selected[i] }}</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider " style=" line-height: 20px;">  
+                    <tr><td class="text-end">$ {{table_data[i]['income']}}</td></tr>
+                    <tr><td class="text-end">$ {{table_data[i]['expense']}}</td></tr>
+                    <tr><td class="text-end">$ {{table_data[i]['profit']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['profit_ratio']}} %</td></tr>
+                    <tr><td class="text-end">$ {{table_data[i]['invoice']}}</td></tr>
+                    <tr><td class="text-end">$ {{table_data[i]['cash']}}</td></tr>
+                    <tr><td class="text-end">$ {{table_data[i]['cash_balance']}}</td></tr>
+                    <tr><td class="text-end">$ {{table_data[i]['accrual_balance']}}</td></tr>
+                </tbody>
+                    
+            </table>
+            {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- KPI REPORT -------------->        
+    {% if report_type == 'KPI Report' %}
+        <!-- Description Part of Table -------------->
+        <div class="flex-container-t" style="width:250px; margin-right: 5px;">
+            <table class="table table-hover" style="font-size: 15px; margin-left: 20px; margin-right: 20px;">
+                <thead style="height: 70px;">
+                    <tr>
+                        <th class="text-start" style="font-size: 14px; font-weight: lighter; position:relative; bottom:30px;">Cut-Off Date : {{cutoff}}</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider " style=" line-height: 20px;">
+                    <tr><td class="text-start">Actual Progress %</td></tr>
+                    <tr><td class="text-start">Planned Progress %</td></tr>
+                    <tr><td class="text-start">Duration Passed %</td></tr>
+                    <tr><td class="text-start">Invoice Approved %</td></tr>
+                    <tr><td class="text-start">Cash Received %</td></tr>
+                    <tr><td class="text-start">CPI</td></tr>
+                    <tr><td class="text-start">SPI</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Numbers Part of Table -------------->
+        <div class="flex-container-t table-responsive"  style="margin-right: 5px; min-width: 200px; ">
+            {% if cutoff %}
+            {% for i in range(project_count) %}
+            <table class="table table-hover" style="font-size: 15px; width:160px; margin-left: 5px; margin-right: 5px; ">
+            
+                <thead style="height: 70px; color: rgb(88, 93, 97);" >
+                    <tr>
+                        <th class="text-end">{{ projects_selected[i] }}</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider " style=" line-height: 20px;">  
+                    <tr><td >
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{table_data[i]['actual_p']}}%;" aria-valuenow="{{table_data[i]['actual_p']}}" aria-valuemin="0" aria-valuemax="100">
+                                {{table_data[i]['actual_p']}} %
+                            </div>
+                        </div>
+                    </td></tr>
+                    <tr><td >
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{table_data[i]['planned_p']}}%;" aria-valuenow="{{table_data[i]['planned_p']}}" aria-valuemin="0" aria-valuemax="100">
+                                {{table_data[i]['planned_p']}} %
+                            </div>
+                        </div>
+                    </td></tr>
+                    <tr><td >
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{table_data[i]['duration_p']}}%;" aria-valuenow="{{table_data[i]['duration_p']}}" aria-valuemin="0" aria-valuemax="100">
+                                {{table_data[i]['duration_p']}} %
+                            </div>
+                        </div>
+                    </td></tr>
+                    <tr><td >
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{table_data[i]['invoice_p']}}%;" aria-valuenow="{{table_data[i]['invoice_p']}}" aria-valuemin="0" aria-valuemax="100">
+                                {{table_data[i]['invoice_p']}} %
+                            </div>
+                        </div>
+                    </td></tr>
+                    <tr><td >
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: {{table_data[i]['cash_p']}}%;" aria-valuenow="{{table_data[i]['cash_p']}}" aria-valuemin="0" aria-valuemax="100">
+                                {{table_data[i]['cash_p']}} %
+                            </div>
+                        </div>
+                    </td></tr>
+                    
+                    <tr><td class="text-end">{{table_data[i]['cpi']}}</td></tr>
+                    <tr><td class="text-end">{{table_data[i]['spi']}}</td></tr>
+                </tbody>
+                    
+            </table>
+            {% endfor %}
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+
+
+
+{% endblock %}

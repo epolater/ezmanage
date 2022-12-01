@@ -1,0 +1,23 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Import
+{% endblock %}
+
+{% block main %}
+<div class="flex-dashboard">
+    <form  action="/uimport" method="post" enctype = "multipart/form-data" accept="application/vnd.ms-excel" style="width:100%; margin:20px;">
+
+        <h5 style="text-align:left; width: 100%; color: rgb(26, 95, 151);">Import Data File</h5>
+        <hr>
+
+        <div class="mb-3">
+            <label for="file" class="form-label">Choose excel file to import</label>
+            <input class="form-control" type="file" id="file" name="file">
+        </div>
+        <hr>
+        <button class="btn btn-secondary" type="submit">Import</button>
+    </form>
+</div>
+
+{% endblock %}

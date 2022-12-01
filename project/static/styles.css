@@ -1,0 +1,101 @@
+
+.select-menu-1 {
+  /*border-style: dotted;*/
+  position: absolute;
+  left: 20px;
+  top: 80px;
+  padding: 10px;
+  width: fit-content;
+  background-color: rgb(8, 118, 182);
+  border-radius: 5px;
+  box-shadow: 1px 1px 4px #8f949b;
+}
+
+/* FLEX-BOX -------------------------------*/
+.flex-box {
+  display:flex;
+  justify-content:space-between;
+}
+
+.flex-box-2 {
+  display:flex;
+  justify-content: flex-end;
+}
+
+body { 
+  padding-top: 65px;
+  
+}
+
+/* FLEX-CONTEINER -------------------------------*/
+.flex-container {
+  display: flex;
+  justify-content: start;
+}
+
+#rightalign {
+  margin-left: auto;
+  
+}
+
+#leftalign {
+  margin-right: auto;
+  
+}
+
+.flex-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: rgb(244, 242, 242);
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 4px #8f949b;
+}
+
+.flex-dashboard-2 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: rgb(8, 118, 182); 
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 4px #8f949b;
+  
+}
+
+.flex-container-t {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  background-color: rgb(244, 242, 242); 
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 4px #8f949b;
+  
+}
+
+.flex-pie {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 200px;
+  height: 200px;
+  border-style: dashed;
+}
+
+.flex-budget {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-self: center;
+
+}
+
+/* PRINT -------------------------------*/
+@page { size: A4 landscape; margin: 1cm }
+@media print {
+    nav { display: none }
+}

@@ -1,0 +1,56 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Users Database
+{% endblock %}
+
+{% block main %}
+    <h5>Users Database</h5>
+    <hr>
+    <div >
+        <form class="row g-4" action="/admusers" method="post">
+
+            <div class="col-auto">
+            <label for="username" class="visually-hidden"></label>
+            <select class="form-select" name="username">
+                <option value="Select Username" selected>Select User Name</option>
+                {% for users in users %}
+                    <option value="{{ users.username }}">{{ users.username }}</option>
+                {% endfor %}
+            </select>
+            </div>
+        
+            <div class="col-auto">
+                <button class="btn btn-secondary" type="submit" >Delete</button>
+            </div>
+        </form>
+        
+    </div>
+    <hr>
+
+    <div class="table-responsive">
+        <table class="table table-sm text-nowrap" id="activities">
+            <thead class="table-info">
+                <tr>
+                    <th class="text-start">user_id</th>
+                    <th class="text-start">username</th>
+                    <th class="text-start">date created</th>
+                </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider ">
+                {% for data in data %} 
+                <tr>
+                    <td class="text-start">{{ data.user_id }}</td>
+                    <td class="text-start">{{ data.username }}</td>
+                    <td class="text-start">{{ data.date }}</td>
+
+                </tr>
+                {% endfor %}
+            
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

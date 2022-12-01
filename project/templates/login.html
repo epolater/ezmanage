@@ -1,0 +1,32 @@
+{% extends "main_layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<div style="font-size: 50px; font-weight:bolder;text-align: center; text-shadow: 4px 4px 6px rgb(176, 175, 175);">EZ MANAGE</div>
+<div style="font-size:24px; font-weight:lighter; text-align: center;">Project Management Dashboard</div>
+<div style="font-size:18px; font-weight:lighter; text-align: center;">Beta Version 1.0</div>
+
+<div class="flex-dashboard" style="margin: auto; max-width: 500px; margin-top: 50px;">
+    <form action="/login" method="post">
+        <div style="text-align: center; font-weight: lighter; margin: 30px;">Please enter your username and password</div>
+        
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+        </div>
+
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+        </div>
+
+        <div style="margin: 30px; text-align: center;">
+            <button class="btn btn-secondary" type="submit">Log In</button>
+        </div>
+    </form>
+</div>    
+
+<div style="font-weight: lighter; font-size:14px;  text-align: center; margin-top: 50px;">Created by Erkan Polater as final project for Harvard's CS50 Introduction to Computer Science</div>
+
+{% endblock %}

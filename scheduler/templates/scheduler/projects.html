@@ -1,0 +1,38 @@
+{% extends "scheduler/layout.html" %}
+{% load static %}
+
+{% block body %}
+{% if user.is_authenticated%}
+<div id="{{ section_display }}" class="section_display"></div>
+
+<!-- Projects Table -->
+<div class="projects-table-container">
+    <table class="table_01">
+        <thead>
+            <th style="width: 10px;"><input id="selectall" type="checkbox"></th>
+            <th style="text-align: left;">Project ID</th>
+            <th style="text-align: left;" >Project Name</th>
+            <th>Start</th>
+            <th>Finish</th>
+            <th>Duration</th>
+            <th>Activity Count</th>
+        </thead>
+        {% for project in projects%}
+        <tr id="project-row" class="{{project.project_id}}">
+            <td><input id="{{project.project_id}}" type="checkbox" class="csrf_token" value="{{ csrf_token }}" name="{{project.name}}"/></td>
+            <td name="{{project.project_id}}" id="{{project.project_id}}" style="text-align: left;">{{ project.project_id }}</td>
+            <td name="{{project.project_id}}" id="{{ project.name }}" style="text-align: left;" >{{ project.name }}</td>
+            <td>{{ project.start }}</td>
+            <td>{{ project.finish }}</td>
+            <td>{{ project.duration }} days</td>
+            <td >{{ project.activities.count}}</td>
+        </tr>
+        {% endfor %}
+        <tr><td>.</td><td>.</td><td>.</td><td>.</td><td>.</td><td>.</td><td>.</td></tr>
+    </table>
+</div>
+
+
+{% endif %}
+{% endblock %}
+

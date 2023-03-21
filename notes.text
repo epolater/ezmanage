@@ -1,0 +1,27 @@
+
+yeni aktivite eklerken javascriptte sayfa yenileme kullanildi (window.location.onload(true)) Yerine javascriptte sayfayi yenilemden aktivite ekleme yoluna bakilacak
+Activities penceresinde bottom menu project generals icerigi ile aciliyor, activity generalsi gosterecke sekilde duzeltilecek
+Edit relation her secimde tekrar tekrar calisyor, kontrol edilecek
+** relation silince uyari mesaji ciksin
+
+GENEL
+1. Successor Assignment - OK
+2. Time Scale Tarih Gosterimleri - OK
+3. Tarih formatinin ayarlanmasi - OK
+4. Gantt Chart aktivite aciklamalari eklenemesi - OK
+4.1. TimeScale zoom ayari - 19 Mart
+5. Driving aktivitelerin secilmesi - 19 Mart
+6. Gantt chartta kiritik aktivitelrin kirmizlanmasi - OK
+7. Projects penceresinin ayarlanmasi, hatalarin giderilmesi - OK
+7.1. Project id'nin unique olmasini saqlayacak kontrol eklenecek - 19 Mart
+8. Bottom menude secili tabin isaretli olmasinin saglanmasi, pencere yenilendiginde - 20 Mart
+8.1. Relations tabdaki tablonun basliginin sabitlenmesi - 20 Mart
+9. Bottom tab projects kisminda generals gostermeli sadece - 20 Mart
+10. Schedule Update ( Actual Start, Finish ve Progress Eklenmesi, Run seceneginin buna gore duzenlenmesi ) - 21 Mart
+
+10. Aktivite gruplama, WBS ya da activity Codes eklenmesi - 22 Mart
+11. Loop kontrolu yapilacak schedule run icin
+12. Relation olarak bir aktivitenin birden fazla eklenmesi durumu ??
+13. Kolonlara kolon icerigine gore siralama eklenmesi
+14. Kolon genisliklerinin ayarlanabilir yapilmasi
+15. Ayarlar seceneginin eklenmesi(gantt gorunumu, kolon secimleri, vs..)

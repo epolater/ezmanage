@@ -1,0 +1,113 @@
+{% extends "scheduler/layout.html" %}
+{% load static %}
+
+{% block body %}
+{% if user.is_authenticated%}
+<div class="top-section" >
+    <div id="{{ section_display }}" class="section_display" style="display: none;"></div>
+    <!--Onemli, silme-->
+    
+    <div style="display: none;">
+        <div id="project-start" name="{{ start }}"></div>
+        <div id="latestdate" name="{{ latestdate }}" ></div>
+        <div id="project-duration" name="{{ project_duration }}" ></div>
+    </div>
+    
+
+
+    <div style="display: flex; height: 100%;">
+    <!-- Activities Table -->
+        <div class="activities-section"> <div class="csrf_token" id="{{csrf_token}}"></div>
+            
+            <table id="activitytable" class="table_02">
+                <thead id="activitytable-head">
+                    {% for header in activity_headers.values %}
+                    <th class="activity-header">{{ header }}</th>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr class="activityrow" id="{{ activity.activity_id }}" name="{{ activity.name }}">
+                        
+                        <td name="{{ activity.activity_id }}" id="{{ activity.activity_id }}">{{ activity.activity_id }}</td>
+                        <td name="{{ activity.activity_id }}" id="{{ activity.name }}" >{{ activity.name }}</td>
+                        <td name="{{ activity.activity_id }}" id="original_duration" >{{ activity.original_duration }}</td>
+                        <td name="{{ activity.activity_id }}" id="remaining_duration" >{{ activity.remaining_duration }}</td>
+                        <td name="{{ activity.activity_id }}" id="start" >{{ activity.start }}</td>
+                        <td name="{{ activity.activity_id }}" id="finish" >{{ activity.finish }}</td>
+                        <td name="{{ activity.activity_id }}" id="total_float" >{{ activity.total_float }}</td>
+                        <td name="{{ activity.activity_id }}" id="free_float" >{{ activity.free_float }}</td>
+                        <td name="{{ activity.activity_id }}" id="late_start" >{{ activity.late_start }}</td>
+                        <td name="{{ activity.activity_id }}" id="late_finish" >{{ activity.late_finish }}</td>
+                        <td name="{{ activity.activity_id }}" id="actual_duration" >{{ activity.actual_duration }}</td>
+                        <td name="{{ activity.activity_id }}" id="actual_start" >{{ activity.actual_start }}</td>
+                        <td name="{{ activity.activity_id }}" id="actual_finish" >{{ activity.actual_finish }}</td>
+
+                        {% for code in activity.activityfor_code.all %}
+                        <td name="{{ activity.activity_id }}" id="{{ code.wbs }}" >{{ code.wbs }}</td>
+                        <td name="{{ activity.activity_id }}" id="{{ code.code }}" >{{ code.code }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- End of Activities Table -->
+
+        <div class="vertical-seperator"></div>
+
+        <!-- Gannt Chart -->
+        <div class="gantt-section">
+            <div style="display:flex ; flex-direction: column;">
+                <div id="gantt-time-header" class="gantt-time-header">
+                    <div id="gantt-time-header3" style="display:flex; "></div>
+                    <div id="gantt-time-header2" style="display:flex; "></div>
+                    <div id="gantt-time-header1" style="display:flex; "></div>
+                </div> 
+                
+                {% for activity in activities %}
+                <div id="{{activity.activity_id}}" class="gantt-rows"></div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- End of Gannt Chart -->
+    </div>
+</div>
+
+<!-- Relationship Assignment Window (Pop-up)-->
+<div id="assignrelationwindow">
+    <div class="window-top-bar">
+        <button id="closebutton" class="fa-solid fa-xmark"></button>
+    </div>
+
+    <div style="display: flex; justify-content: space-between;"></div>
+    <h5 id="windowtitle1">..</h5>
+    <div class="assigntable-container">
+        <table id="activitytable" class="table_03">
+            <thead >
+                    <th>Activity Id</th>
+                    <th>Activity Name</th>
+                    <th>Start</th>
+                    <th>Finish</th>
+            </thead>
+            {% for activity in activities %}
+                <tr class="activityrow2" id="{{ activity.activity_id }}">
+                    <td >{{ activity.activity_id }}</td>
+                    <td >{{ activity.name }}</td>
+                    <td >{{ activity.start }}</td>
+                    <td >{{ activity.finish }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+    <div style="display: flex; justify-content: flex-end;">
+        <button id="addassignmentbutton">Assign</button>
+    </div>
+</div>
+<!-- Endof Relationship Assignment Window (Pop-up)-->
+
+
+{% endif %}
+{% endblock %}
+

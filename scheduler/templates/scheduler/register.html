@@ -1,0 +1,64 @@
+{% extends "scheduler/layout.html" %}
+
+{% block body %}
+
+<div class="login-container">
+    <div class="title">Verano</div>
+    
+    <h2>Register</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="post" class="login">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <div class="mb-3">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+
+    <p style="margin-top: 20px;">Already have an account? <a href="{% url 'login' %}">Log In here.</a></p>
+
+    <div style="font-weight: lighter; font-size:14px;  text-align: center; margin-top: 50px;">
+        Created by Erkan Polater as final project for Harvard's CS50W Web Programming with Python and JavaScript
+    </div>
+
+</div>
+
+<style>
+    .login-container {
+        display: flex; 
+        flex-direction: column;
+        width:calc(100% + 130px);
+        align-items: center;
+        margin-left: -130px;
+        margin-top: 15vh;
+
+    }
+    
+    .login {
+        width:350px;
+
+    }
+
+    .title {
+        font-size: 50px;
+        font-weight:bolder;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgb(176, 175, 175);
+        margin-bottom: 30px;
+    }
+</style>
+
+{% endblock %}

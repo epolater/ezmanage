@@ -1,0 +1,331 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Verano{% endblock %}</title>
+
+    <!-- Bootstrap Packages -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <!-- Font Packages -->
+    <script src="https://kit.fontawesome.com/ea46e56c65.js" crossorigin="anonymous"></script>
+
+    <script src="{% static 'scheduler/scheduler.js' %}"></script>
+    <link href="{% static 'scheduler/styles.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="#" />
+
+    {% block script %}{% endblock %}
+
+</head>
+
+<body>
+    <!-- NAV. BAR ------------------------------------------------------------------------------------->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary fixed-top shadow-sm" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="font-weight: bolder;" href="{% url 'index' %}">Verano</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">                
+                <ul class="navbar-nav mt-auto mt-2">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">{{ user.username }} |</li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}" >Log Out</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    {% if user.is_authenticated%}
+    <!-- TOP MENU ------------------------------------------------------------------------------------->
+    <div class="top-menu">
+        <div style="display: flex; align-items: center;">
+            <button id="menu-button"><i class="fa-solid fa-bars fa-xxl"></i></button>
+            <div class="brand">Verano</div>
+        </div>
+
+        <div>
+            <a >{{ user.username }} |</a>
+            <button class="logout-button"><a class="nav-link" href="{% url 'logout' %}" >Log Out</a></button>
+        </div>
+    </div>
+
+
+    <!-- SIDE MENU ------------------------------------------------------------------------------------->
+    <div id="sidemenu-left" class="sidemenu-left">
+        <!-- Projects -->
+        <div style="border-bottom: 1px dashed lightgrey; display: flex; flex-direction: column;">
+            <button id="addnew"><span class="fa-solid fa-folder-plus fa-lg"></span></button>
+            <button id="openproject" ><span class="fa-regular fa-folder-open  fa-lg"></span></button>
+            <button id="deleteproject"><span class="fa-solid fa-trash  fa-lg"></span></button>
+            
+        </div>
+
+        <!-- Activities -->
+        <div style="border-bottom: 1px dashed lightgrey; margin-top:10px;display: flex; flex-direction: column;">
+            <div class="csrf_token2" id="{{csrf_token}}"></div>
+            <button id="addnew-activity"><span class="fa-solid fa-plus  fa-lg"></span></button>
+            <button id="delete-activity" disabled><span class="fa-solid fa-x  "></span></button>
+        </div>
+
+        <button id="run"><span class="fa-solid fa-play fa-lg"></span></button>
+        <a class="nav-link" href="{% url 'test' %}">Test</a>
+        
+
+    </div>
+    {%endif%}
+    
+    <!-- POP-UP WINDOWS ------------------------------------------------------------------------>
+    <div id="newprojectwindow">
+        <div class="window-top-bar">
+            <button id="closebutton" class="fa-solid fa-xmark"></button>
+        </div>
+
+        <div style="margin-top: 15px; font-size: 16px;"><strong>Create New Project</strong></div>
+        <hr>
+        <form action="{% url 'addnewproject' %}" method="post" style="display: flex; flex-direction: column; width: 350px;">
+            {% csrf_token %}
+            <label for="projectid">Project ID</label>
+            <input type="text" id="projectid" name="projectid"><br>
+            
+            <label for="projectname">Project Name</label>
+            <input type="text" id="projectname" name="projectname"><br>
+            
+            <label for="projectstart">Project Start Date</label>
+            <input type="date" id="projectstart" name="projectstart"><br>
+            
+            <input type="submit" value="Create" style="background-color: rgb(212, 212, 212);">
+        </form>
+
+    </div>
+
+    <div id="confirmationwindow" >
+        <div class="window-top-bar">
+            <button id="closebutton" class="fa-solid fa-xmark"></button>
+        </div>
+        <p id="message" style="margin-top: 20px;font-weight: bold;">...</p>
+        <div style="display: flex; justify-content: center;">
+            <button id="yes" class="yes-button">Yes</button>
+        </div>
+
+    </div>
+
+    <div id="warningwindow">
+        <div class="window-top-bar">
+            <button id="closebutton" class="fa-solid fa-xmark"></button>
+        </div>
+        <div id="message2" style="margin-top: 20px; font-weight: bold;">...</div>
+    </div>
+
+    <div id="overlay"></div>
+
+
+    <!-- PAGE BODY ---------------------------------------------------------------------------------------->
+    <div class="body">
+        <div class="top-menu-bar">
+            <div id="top-menu-tabs" style="display: flex;"></div>
+            {% if project %}
+            <div name="{{ project.project_id }}" id="activity_project">{{ project.name }}</div>
+            {% endif %}
+        </div>
+        
+        {% block body %}
+        {% endblock %}
+
+        <!-- BOTTOM MENU ----------------------------------------------------------------------------------->
+        {% if user.is_authenticated%}
+        <div id="bottom-section" class="bottom-section">
+            <div class="bottom-topbar">
+                <button id="button-hide" class="fa-solid fa-angle-down fa-lg" ></button>
+            </div>
+
+            <!--Tabs-->
+            <div id="bottom-window" class="bottom-window">
+                <div id="bottom-tabs" class="bottom-tabs">
+                {% for tab in bottom_tabs %}
+                    <button id="{{ tab }}" class="tab">{{ tab }}</button>
+                {% endfor %}
+                </div>
+
+                <!--Project General Tab-->
+                {% if section_display == "projects" %}
+                <div id="tabGeneral" class="bottom-menus">
+                    <div>
+                        <label for="project-id-iput">Project ID</label>
+                        <input id="project-id-input" type="text" style="margin-left: 10px;"/>
+ 
+                        <label for="project-name-input"  style="margin-left: 40px;">Project Name</label>
+                        <input id="project-name-input" type="text" style="margin-left: 10px;"/>
+                    </div>
+
+                    <div style="margin-top:20px;">
+                        <label for="project-durationtype" style="margin-right: 10px;">Duration Type</label>
+                        <select id="project-durationtype"  style="margin-bottom: 20px;">
+                            <option value="Fixed Duration & Units">Fixed Duration & Units</option>
+                            <option value="Fixed Units/Time">Fixed Duration & Units</option>
+                            
+                        </select>
+                        <br>
+                        <label for="project-percentcomplete" style="margin-right: 10px;">Percent Complete Type</label>
+                        <select id="project-percentcomplete" style="margin-bottom: 20px;">
+                            <option value="duration">Duration</option>
+                            <option value="physical">Physical</option>
+                            <option value="units">Units</option>
+                        </select>
+                        <br>
+                        <label for="project-calendar" style="margin-right: 10px;">Calendar</label>
+                        <select id="project-calendar">
+                            <option value="standart">Standart 7 Days</option>
+                            <option value="userdefined">User Defined</option>
+                        </select>
+                    </div>
+                </div>
+                {% endif %}
+                
+
+                <!--Project Dates Tab-->
+                <div id="tabDates" class="bottom-menus" style="display:none">
+                    <label for="project-plannedstart">Planned Start</label>
+                    <input id="project-plannedstart" type="date">
+
+                    <label for="project-name">Must Finish By</label>
+                    <input id="project-mustfinishby" type="date">
+                </div>
+
+                <!--Project Defaults Tab-->
+                <div id="tabDefaults" class="bottom-menus" style="display:none">
+
+                </div>
+
+                <!--Activity General Tab-->
+                {% if section_display == "activities" %}
+                <div id="tabGenerals" class="bottom-menus">
+                    <div  style="display: flex;">
+                        
+                        <div style="display: flex; flex-direction: column;">
+                            <div style="margin-bottom:10px;"><strong>General</strong></div>
+                            <!--<label for="project-name2">Project Name</label>-->
+                            <!--<input id="project-name2-input" type="text" disabled/>-->
+
+                            <label for="activity-id">Activity ID</label>
+                            <input id="activity-id-input" type="text" value="" disabled/><br>
+                
+                            <label for="activity-name">Activity Name</label>
+                            <input id="activity-name-input" type="text" disabled/>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; margin-left: 30px;">
+                            <div style="margin-bottom:10px;"><strong>Duration</strong></div>
+                            <label for="original-duration-input">Original Duration</label>
+                            <input id="original-duration-input" type="number" disabled/><br>
+
+                            <label for="remaining-duration-input">Remaining Duration</label>
+                            <input id="remaining-duration-input" type="number" disabled/><br>
+
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; margin-left: 30px;">
+                            <div style="margin-bottom:10px;"><strong>Status</strong></div>
+                            <div style="display:flex;">
+                                <input id="start_check" type="checkbox"  disabled/>
+                                <div style="margin-left:10px; margin-right:10px;">Startetd</div>
+                                <input id="actual_start_input" type="date" disabled/>
+                            </div><br>
+                            
+                            <div style="display:flex;">
+                                <input id="finish_check" type="checkbox" disabled/>
+                                <div style="margin-left:10px; margin-right:10px;">Finished</div>
+                                <input id="actual_finish_input" type="date" disabled/>
+                            </div><br>
+
+                            <div style="display:flex;">
+                                <div style="margin-left:10px; margin-right:10px;">Progress %</div>
+                                <input id="progress_input" type="number" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!--Relationships Tab-->
+                <div id="tabRelationships" class="bottom-menus" style="display:none">
+                    <div  style="display: flex; flex-wrap: wrap;">
+                        <div class="relationships">
+                            <div style="display: flex; align-items: center;">
+                                <p>Predecessors</p>
+                                <div class="relationsmenu">
+                                    <button id="assignpredecessor" ><i class="fa-solid fa-plus" ></i></button>
+                                    <button id="removepredecessor" ><i class="fa-solid fa-xmark" ></i></button>
+                                    <button id="gotopredecessor" ><i class="fa-solid fa-arrow-up" ></i></button>
+    
+                                </div>
+                            </div>
+                            <div class="sub-relationships" >
+                                <table id="predecessortable">
+                                    <thead>
+                                        <th>Activity ID</th>
+                                        <th>Activity Name</th>
+                                        <th>R. Type</th>
+                                        <th>Lag</th>
+                                        <th>Start</th>
+                                        <th>Finish</th>
+                                        <th>Driving</th>
+                                        <th>Critical</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="relationships">
+                            <div style="display: flex; align-items: center;">
+                                <p>Successors</p>
+                                <div class="relationsmenu">
+                                    <button id="assignsuccessor" ><i class="fa-solid fa-plus" ></i></button>
+                                    <button id="removesuccessor" ><i class="fa-solid fa-xmark" ></i></button>
+                                    <button id="gotosuccessor" ><i class="fa-solid fa-arrow-up" ></i></button>
+    
+                                </div>
+                            </div>
+                            
+                            <div class="sub-relationships" >
+                                <table id="successortable">
+                                    <thead>
+                                        <th>Activity ID</th>
+                                        <th>Activity Name</th>
+                                        <th>R. Type</th>
+                                        <th>Lag</th>
+                                        <th>Start</th>
+                                        <th>Finish</th>
+                                        <th>Driving</th>
+                                        <th>Critical</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {%endif%}
+        <!-- END OF BOTTOM MENU ------------------------------------------------------------------------------->
+    
+    </div>
+
+
+
+</body>
+
+</html>

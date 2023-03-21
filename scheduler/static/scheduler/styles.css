@@ -1,0 +1,747 @@
+body {
+    background-color: rgb(230, 230, 230);
+}
+.body {
+    margin-right: 10px;
+    margin-left: 50px;
+    padding-left:5px;
+    padding-right:5px;
+    /*margin-top: 30px;*/
+    font-size: 14px;
+    /*width: 100%;*/
+    transition: all 0.5s ease;
+    background-color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid lightgrey;
+}
+
+.logout-button {
+    border:none;
+    height: 35px;
+    width:80px;
+    font-size:14px;
+    border-radius: 20px;
+    margin-left: 20px;
+    transition: all 0.5s ease;
+}
+.logout-button:hover {
+    background-color: powderblue;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    display: none; /* initially hidden */
+}
+#overlaytransparent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: none; /* initially hidden */
+  }
+
+.navbar {
+    z-index:10;
+  }
+
+.top-menu {
+    display: flex;
+    background-color: rgb(230, 230, 230);
+    height: 50px;
+    justify-content: space-between;
+    align-items: center;
+    padding-right:20px;
+    padding-left:10px;
+}
+
+#menu-button {
+    border:none;
+    background-color: unset;
+    font-size:20px;
+    transition: all 0.2s ease;
+}
+#menu-button:hover {
+    color:rgb(21, 132, 229);
+    
+}
+
+.brand {
+    font-size: 23px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.top-menu-bar {
+    display: flex;
+    justify-content: space-between;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 10px;
+    margin-left:10px;
+    margin-right:10px;
+    padding-right:25px;
+    padding-left:25px;
+    padding-top: 10px;
+}
+
+.button-top-menu {
+    font-size:16px;
+    font-weight: bold;
+    border:none;
+    background-color: unset;
+    margin-right: 20px;
+    border-bottom: 2px solid white;
+    transition: all 0.5s ease;
+}
+.button-top-menu-selected {
+    font-size:16px;
+    font-weight: bold;
+    border:none;
+    background-color: unset;
+    margin-right: 20px;
+    border-bottom: 2px solid white;
+    transition: all 0.5s ease;
+    color:rgb(55, 120, 180);
+    border-bottom: 2px solid rgb(55, 120, 180);
+}
+
+.button-top-menu:hover {
+    color:rgb(55, 120, 180);
+    border-bottom: 2px solid rgb(21, 132, 229);
+}
+
+.top-section {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 50px); /* 50px for top-menu height*/
+    transition: height 0.5s ease;
+}
+
+input, select {
+    border:1px solid lightgray;
+    border-radius: 8px;
+    padding-left:10px;
+    padding-right:5px;
+    font-size: 13px;
+}
+
+/* BOTTOM MENU ------------------------------*/
+    .bottom-section {
+        position: fixed;
+        bottom: 0.5%;
+        right:1px;
+        width:calc(100% - 60px);
+        margin-right: 10px;
+        background-color: rgb(245, 245, 245);
+        z-index:1;
+        /*height:240px;*/ /*in JavaScript*/
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.5s ease;
+        
+        
+    }
+
+    .bottom-topbar {
+        display: flex;
+        justify-content: end;
+        background-color: rgb(124, 153, 181);
+        height: 20px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+    }
+
+    #button-hide {
+        border: none;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        background-color: rgb(245, 245, 245);
+        transition: all 0.3s ease;
+    }
+    #button-hide:hover { 
+        cursor: pointer;
+        color:rgb(8, 155, 200)
+    }
+
+    .bottom-window {
+        font-size: 14px;
+    }
+
+    .bottom-tabs {
+        display:flex;
+        height: 30px;
+        padding-left: 20px;
+        border-bottom: 1px solid lightgrey;  
+    }
+
+    .tab {
+        background-color: rgb(245, 245, 245);
+        font-size: 12px;
+        font-weight: bold;
+        border: none;
+        transition: all 0.3s ease;
+        
+    }
+
+    .tab:hover, .tab:focus {
+        color:rgb(55, 120, 180);
+        border-bottom: 2px solid rgb(55, 120, 180);
+    }
+    
+    .selected-tab {
+        background-color: rgb(245, 245, 245);
+        font-size: 12px;
+        font-weight: bold;
+        border: none;
+        transition: all 0.3s ease;
+        color:rgb(55, 120, 180);
+        border-bottom: 2px solid rgb(55, 120, 180);
+    }
+
+    .bottom-menus {
+        display: flex;
+        flex-direction: column;
+        padding:20px;
+        padding-top: 10px;
+        font-size: 13px ;
+    }
+
+    /* Relationships----------------*/
+    .relationships {
+        width: 50%;
+        /*border-style: dashed;*/
+        padding: 5px;
+        min-width: 200px;
+    }
+    
+    .relationships table {
+        table-layout: fixed;
+        
+    }
+    .sub-relationships {
+        overflow-x: scroll;
+        overflow-y: scroll;
+        height: 120px;
+        background-color: white;
+        
+    }
+
+    .relationships th {
+        font-size: 12px;
+        font-weight: 300;
+        padding: 2px;
+        border: 1px solid lightgray;
+        white-space: nowrap;
+        background-color: rgb(232, 232, 232);
+    }
+
+    #relationtype {
+        border:none;
+        font-size: 11px;
+    }
+
+/* POP-UP WINDOWS ------------------------------*/
+
+    #newprojectwindow, #confirmationwindow {
+        display: none;
+        position: fixed;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        background-color: #f0eded;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        font-size: 14px;
+    }
+
+    #assignrelationwindow {
+        display: none;
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        padding-top: 40px;
+        background-color: rgb(230, 227, 227);
+        border-radius: 10px;
+        border: none;
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        width:500px;
+        height:440px;
+
+    }
+
+    #warningwindow {
+        display: none;
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+    }
+
+    .window-top-bar {
+        background-color: grey;
+        position: fixed;
+        top:0;
+        width: 100%;
+        height:30px;
+        margin-left: -30px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        cursor: move;
+        text-align: right;
+        padding:0;
+    }
+
+    #closebutton {
+        border:none;
+        background-color:unset;
+        color: azure;
+        padding:0;
+        margin-right: 10px;
+        height: 25px;
+        width:25px;
+        margin-top:3px;
+    }
+
+
+    #addassignmentbutton {
+        border:none;
+        border-radius: 15px;
+        height: 30px;
+        width:70px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        margin-top: 15px;
+        align-self: flex-end;
+
+    }
+    #addassignmentbutton:hover {
+        background-color: rgb(216, 216, 216);
+    }
+
+    .yes-button {
+        border:none;
+        border-radius: 15px;
+        height: 30px;
+        width:70px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        margin-top: 15px;
+    }
+
+
+/* SIDE MENU ------------------------------*/
+    .sidemenu-left {
+    width: 45px;
+    height: 100%;
+    background-color: rgb(230, 230, 230);
+    position: fixed;
+    transition: all 0.5s ease;
+
+    }
+
+    .sidemenu-left button {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: none;
+    width: 130px;
+    height: 28px;
+    background-color: unset;
+    padding-left: 15px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-align: start;
+    color: rgb(43, 95, 143);
+    transition: background-color 0.3s ease;
+    }
+    .sidemenu-left button:hover {
+    background-color: rgb(210, 210, 210);
+    color: rgb(21, 132, 229);
+    }
+
+    .sidemenu-left span {
+        margin-right:8px;
+    }
+
+
+/* TABLES----------------*/
+    .projects-table-container {
+        padding-left:20px;
+        padding-right:20px;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        overflow: auto;
+        height: calc(100% - 55px);
+    }
+    .table_01 {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        background-color: rgb(245, 245, 245);
+        border-left:none;
+        width: 100%;
+        min-width: 800px;
+        text-align: center;
+
+    }
+
+    .table_01 td {
+        border-bottom: 1px solid lightgrey;
+        padding: 5px;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 12px;
+      }
+
+    .table_01 tr:hover {
+        background-color: rgb(235, 235, 235);
+    }
+
+    .table_01 th {
+        border-bottom: 1px solid rgb(181, 181, 181);
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color:rgba(0, 0, 0, 0);
+        height: 40px;
+        background-color: rgb(207, 207, 207);
+        font-size: 12px;
+    }
+    
+    .table_01 th:hover {
+        background-color: rgb(207, 207, 207);
+    }
+
+    /* Activity Table --------*/
+    .activities-section {
+        border-left: 1px solid lightgray;
+        width: 50%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        height: 100%;
+        /*overflow: auto;*/ /* scrolled aouto woth gantt section */
+    }
+
+    .addnew-activity button {
+        width: 40px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2)
+        
+    }
+    .addnew-activity {
+        display: flex;
+        justify-content: end;
+        padding: 5px;
+    }
+   
+    .table_02 {
+        background-color: white;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        
+    }
+
+    .table_02 td {
+        border-bottom: 1px solid lightgrey;
+        padding: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 12px;
+        white-space: nowrap;
+        height:25px;
+        
+    }
+
+    .activityrow:hover, .activityrow2:hover {
+        background-color: rgb(213, 237, 255);
+    }
+
+    .table_02 th {
+        border-bottom: 1px solid rgb(181, 181, 181);
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color:rgba(0, 0, 0, 0);
+        height: 40px;
+        background-color: rgb(205, 205, 205);
+        font-size: 10px;
+        position: sticky;
+        top:0;
+    }
+    
+    .table_02 th:hover {
+        box-shadow:none;
+    }
+
+    .selected-row {
+        border: 1px solid lightgrey;
+        padding: 3px;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 12px;
+        white-space: nowrap;
+        background-color: rgb(213, 237, 255);
+ 
+    }
+
+    .selected-row2 {
+        border: 1px solid lightgrey;
+        padding: 3px;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 12px;
+        white-space: nowrap;
+        background-color: steelblue;
+        color: white;
+    }
+
+    .selected-row2:hover {
+        background-color: steelblue;
+        color: white;
+    }
+    /* Relation Assignment Table --------*/
+    .assigntable-container {
+        overflow: auto;
+        overflow-x: hidden;
+        height: 300px;
+
+    }
+    .table_03 {
+        background-color: white; 
+        border: 1px solid rgb(181, 181, 181);
+        border-radius: 10px ;
+        overflow: auto;
+        overflow-y: scroll;
+    }
+    .table_03 td {
+        border-bottom: 1px solid lightgrey;
+        padding: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 12px;
+        white-space: nowrap;
+        height: 25px;
+        
+    }
+    .table_03 th {
+        border-bottom: 1px solid rgb(181, 181, 181);
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color:rgba(0, 0, 0, 0);
+        height: 40px;
+        background-color: rgb(205, 205, 205);
+        font-size: 10px;
+        position: sticky;
+        top:0;
+    }
+
+    .predecessor_lag_input, .successor_lag_input {
+        font-size: 10px;
+        padding: 0;
+        padding-left: 3px;
+        border-radius: initial;
+        height:12px;
+    }
+
+    /* Relationships ------------*/
+    .relationships td {
+        border: 1px solid lightgrey;
+        padding-left: 4px;
+        padding-right: 4px;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+        
+    .relationships p {
+        margin-right:20px;
+        height: 12px;  
+    }
+
+    .relationships input {
+        border:none;
+        width: 30px;
+    }
+
+    .relationselect {
+        border: none;
+    }
+    .relationselect:focus {
+        outline: none;
+    }
+    .sub-relationships {
+        border: 1px solid lightgrey;
+    }
+
+    .relationsmenu {
+        display: flex;
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+
+    .relationsmenu button{
+        margin:4px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        background-color: rgb(230, 230, 230);
+        font-size: 12px;
+    }
+    
+    .relationsmenu button:hover{
+        background-color: rgb(203, 203, 203);
+    }
+
+    .relationrow-selected {
+        border: 1px solid lightgrey;
+        padding: 3px;
+        padding-left: 20px;
+        padding-right: 20px;
+        font-size: 12px;
+        white-space: nowrap;
+        background-color: steelblue;
+        color: white;
+    }
+
+    /* Lag input fields
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+
+
+    /* GANTT SECTION------------------------------*/
+    .gantt-section {
+        border: 1px solid lightgray;
+        width: 50%;
+        overflow-x: scroll;
+        overflow-y: scroll;
+        overflow: auto;
+        /*margin-left:5px;*/
+        position: relative;
+        
+    }
+
+    .gantt-time-header {
+        display: flex;
+        flex-direction: column;
+        /*align-items: center;*/
+        background-color: rgb(205, 205, 205);
+        height:50px;
+        width: fit-content;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        z-index:1;
+
+    }
+
+    .gantt-time-header div {
+        flex-shrink: 0;
+        flex-grow: 0;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .gantt-rows {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+        height:25px;
+        font-size: 10px; 
+        color:gray;     
+    }
+
+    .gantt-bar {
+        border: 1px solid rgb(109, 185, 231);
+        box-shadow: 0 2px 2px lightgray;
+        height: 55%;
+        background-color: rgb(171, 214, 244);
+        border-radius: 10px;
+        position: relative;
+
+    }
+    .gantt-bar:hover {
+        background-color: rgb(131, 196, 242);
+        cursor: pointer;
+
+    }
+
+    .gantt-bar-critical {
+        border: 1px solid rgb(181, 38, 38);
+        box-shadow: 0 2px 2px lightgray;
+        height: 55%;
+        background-color: rgb(238, 152, 152);
+        border-radius: 10px;
+        position: relative;
+
+    }
+    .gantt-bar-critical:hover {
+        background-color: rgb(242, 104, 104);
+        cursor: pointer;
+
+    }
+
+    .milestone {
+        height: 55%;
+        position: relative;
+
+    }
+
+    .start-line {
+        border-left: 0px;
+        border-style: dotted;
+        border-color: lightgrey;
+        width:1px;
+        height: 100%;
+        position: absolute;
+        top:0px;
+        /*z-index:-1;*/
+    }
+
+    .finish-line {
+        border-left: 0px;
+        border-style: dotted;
+        border-color: lightgrey;
+        width:1px;
+        height: 100%;
+        position: absolute;
+        top:0px;
+        /*z-index:-1;*/
+    }
+
+    .vertical-seperator {
+        border: 1px solid rgb(210, 210, 210);
+        background-color: rgb(235, 235, 235);
+        height: 100%;
+        width:4px;
+
+    }
+
+    .vertical-seperator:hover {
+        border: 2px solid lightgray;
+        background-color: rgb(228, 228, 228);
+        cursor:col-resize;  
+    }
+
+    .days, .months, .years {
+        border-left: 1px solid rgb(180, 180, 180);
+        border-top: 1px solid rgb(180, 180, 180);
+    }
